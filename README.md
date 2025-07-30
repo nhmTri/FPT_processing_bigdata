@@ -1,5 +1,5 @@
 # FPT_processing_bigdata
-Processing over 10 million raw rows to output over 1 million OLAP rows within 1 processing batch
+Engineered a high-performance PySpark pipeline to process over 10 million raw JSON records per batch, generating 1+ million OLAP-ready rows in under 250 seconds.
 
 # Sample Video
 https://drive.google.com/file/d/1CPp5jQS-OPERCuMbpCZSnlkHCB0UMFH3/view?usp=sharing
