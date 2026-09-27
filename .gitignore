@@ -1,0 +1,41 @@
+# data & output
+data/raw/
+output/
+*.parquet
+*.csv
+*.xlsx
+*.json.gz
+
+# spark
+spark-warehouse/
+metastore_db/
+derby.log
+checkpoint/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# java / maven
+target/
+*.class
+
+# ide & os
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# secrets
+.env
+*.pem
+credentials*.json
+
+# keep the synthetic samples
+!data/sample/*.csv
+!data/sample/*.jsonl
+!Result_Method1/sample_output.csv
