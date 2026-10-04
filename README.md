@@ -3,6 +3,7 @@
 ![PySpark](https://img.shields.io/badge/PySpark-3.5-2456D6?style=flat-square&logo=apachespark&logoColor=white)
 ![Java Spark](https://img.shields.io/badge/Java%20Spark-benchmarked-2456D6?style=flat-square&logo=openjdk&logoColor=white)
 ![Rows](https://img.shields.io/badge/10M%20→%201M%20rows-under%20250s-1F7A5A?style=flat-square)
+[![checks](https://github.com/nhmTri/FPT_processing_bigdata/actions/workflows/checks.yml/badge.svg)](https://github.com/nhmTri/FPT_processing_bigdata/actions/workflows/checks.yml)
 ![Licence](https://img.shields.io/badge/licence-Apache--2.0-8892A6?style=flat-square)
 
 <img src="assets/pipeline.svg" alt="Staged batch pipeline from raw JSON to a star schema" width="100%">
@@ -75,3 +76,33 @@ Spark at scale, and the habit of proving a tooling decision with a benchmark ins
 
 **Stack** · PySpark · Java Spark · nested JSON · star schema
 **More** · [portfolio case study](https://portfolionhmtri.netlify.app)
+
+---
+
+## What CI checks, and why that check exists
+
+Every push runs three jobs. Two of them are ordinary — the Java Spark job compiles,
+the Python sources compile. The third is the one worth reading.
+
+`tests/test_data_contract.py` asserts that nothing under `data/` could be real:
+
+| Check | Fails when |
+|---|---|
+| Identifiers are marked synthetic | any record's `_id` is missing the `SYN` prefix |
+| No contact details | a parsed string value is shaped like an email address or a phone number |
+| Committed data stays sample-sized | a file under `data/` exceeds 5 MB or 50,000 rows |
+
+That last row is the one that matters. A sample repository has no business holding a
+production extract, and the difference between a sample and an extract is a number a
+reviewer will never check by hand. So the cap is enforced on every push: an oversized
+file fails the build rather than quietly becoming public.
+
+The sample is checked for shape as well — the schema the Spark job reads, the types
+the transforms assume, and whether every `AppName` value is one the categoriser
+actually maps. An unmapped value would otherwise fall through silently and quietly
+mis-bucket a whole content type.
+
+```bash
+pip install -r python/requirements.txt
+pytest tests/ -q
+```

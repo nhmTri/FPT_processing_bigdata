@@ -39,3 +39,6 @@ credentials*.json
 !data/sample/*.csv
 !data/sample/*.jsonl
 !Result_Method1/sample_output.csv
+
+# test cache
+.pytest_cache/
